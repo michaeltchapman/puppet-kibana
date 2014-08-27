@@ -49,11 +49,15 @@ class kibana (
                           'terms', 'stats', 'sparklines' ],
   $logstash_logging = false,
   $default_board    = 'default.json',
+  $docroot          = '/var/www/html/kibana',
+  $manage_apache    = true,
 ) {
 
   class { 'kibana::package':
     ensure  => $ensure,
   }
+
+  include apache
 
   class { 'kibana::config':
     es_host           => $es_host,
@@ -61,6 +65,7 @@ class kibana (
     modules           => $modules,
     logstash_logging  => $logstash_logging,
     default_board     => $default_board,
+    docroot           => $docroot,
   }
 
   anchor { 'kibana::begin': }
